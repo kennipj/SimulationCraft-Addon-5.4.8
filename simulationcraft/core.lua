@@ -124,7 +124,6 @@ local function CreateSimcTalentString()
     local maxColumns = 3
     for tier = 1, maxTiers do
         local selected, id = GetTalentRowSelectionInfo(tier)
-        print(id)
         if not selected then
             if id % 3 == 0 then talentInfo[tier] = 3 else talentInfo[tier] = id % 3 end
         end

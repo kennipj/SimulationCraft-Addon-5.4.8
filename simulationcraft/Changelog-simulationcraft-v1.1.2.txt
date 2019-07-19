@@ -1,0 +1,12 @@
+tag v1.1.2
+90c78a4e74bd040adf1f8bc1dc890c09238070f0
+Theck <theckhd@gmail.com>
+2014-07-24 13:14:54 -0400
+
+Tagging release 1.1.2
+
+
+--------------------
+
+Theck:
+	- Catch nil upgradeLevel entries (maybe?), added debugging output to report for those cases.

@@ -25,7 +25,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Simulationcraft")
 
 -- load stuff from extras.lua
 local SimcStatAbbr  = Simulationcraft.SimcStatAbbr
-local upgradeTable  = Simulationcraft.upgradeTable
 local slotNames     = Simulationcraft.slotNames
 local simcSlotNames = Simulationcraft.simcSlotNames
 local enchantNames  = Simulationcraft.enchantNames
@@ -119,26 +118,16 @@ end
 
 -- method for constructing the talent string
 local function CreateSimcTalentString() 
-    local talentInfo = {}
-    local maxTiers = 6
-    local maxColumns = 3
-    for tier = 1, maxTiers do
-        local selected, id = GetTalentRowSelectionInfo(tier)
-        if not selected then
-            if id % 3 == 0 then talentInfo[tier] = 3 else talentInfo[tier] = id % 3 end
+    local talent_string = "talents="
+    for i=1, 3 do
+        for k=1, 50 do
+            local name, _, _, _, talent_val = GetTalentInfo(i, k)
+            if name == nil then else
+                talent_string = talent_string..talent_val
+            end
         end
     end
-    
-    local str = 'talents='
-    for i = 1, maxTiers do
-        if talentInfo[i] then
-            str = str .. talentInfo[i]
-        else
-            str = str .. '0'
-        end
-    end     
-
-    return str
+    return talent_string
 end
 
 -- method for removing glyph prefixes
@@ -314,14 +303,9 @@ function Simulationcraft:GetItemStuffs()
         if itemLink then
             local itemString = string.match(itemLink, "item[%-?%d:]+")
             simcDebug(itemString)
-            local _, itemId, enchantId, gemId1, gemId2, gemId3, gemId4, _, _, _, reforgeId, upgradeId = strsplit(":", itemString)
+            local _, itemId, enchantId, gemId1, gemId2, gemId3, gemId4, _, _, _, reforgeId = strsplit(":", itemString)
 
             local name = GetItemInfo( itemId )
-            local upgradeLevel = upgradeTable[tonumber(upgradeId)]
-            if upgradeLevel == nil then
-              upgradeLevel = 0
-              simc_err_str = simc_err_str .. '\n # WARNING: upgradeLevel nil for upgradeId ' .. upgradeId .. ' in itemString ' .. itemString
-            end
             
             if not bonusId then
               bonusId = "0"
@@ -466,7 +450,7 @@ function Simulationcraft:GetItemStuffs()
             --gemString ..
         --printable_link = gsub(itemLink, "\124", "\124\124");
         --print(printable_link);
-        simcItemStr = simcSlotNames[slotNum] .. "=" .. tokenize(name) .. ",id=" .. itemId .. ",upgrade=" .. upgradeLevel .. statsString .. gemString .. enchantString .. reforgeString
+        simcItemStr = simcSlotNames[slotNum] .. "=" .. tokenize(name) .. ",id=" .. itemId .. statsString .. gemString .. enchantString .. reforgeString
           --print('#sockets = '..numSockets .. ', bonus = ' .. tostring(useBonus))
           --print( simcItemStr )
         end
@@ -483,11 +467,7 @@ function Simulationcraft:PrintSimcProfile()
     local _, playerClass = UnitClass('player')
     local playerLevel = UnitLevel('player')
     local _, playerRace = UnitRace('player')
-    local playerSpec, role
-    local specId = GetSpecialization()    
-    if specId then
-      _, playerSpec,_,_,_,role = GetSpecializationInfo(specId)
-    end
+    local specId = GetPrimaryTalentTree()    
     
     local p1, p2 = GetProfessions()
     local playerProfessionOne, playerProfessionOneRank, playerProfessionTwo, playerProfessionTwoRank
@@ -507,8 +487,6 @@ function Simulationcraft:PrintSimcProfile()
     local player = tokenize(playerClass) .. '=' .. tokenize(playerName)
     playerLevel = 'level=' .. playerLevel
     playerRace = 'race=' .. tokenize(playerRace)
-    playerRole = 'role=' .. translateRole(role)
-    playerSpec = 'spec=' .. tokenize(playerSpec)
     local playerProfessions = ''
     if p1 or p2 then
       playerProfessions = 'professions='
@@ -527,11 +505,9 @@ function Simulationcraft:PrintSimcProfile()
     local simulationcraftProfile = player .. '\n'
     simulationcraftProfile = simulationcraftProfile .. playerLevel .. '\n'
     simulationcraftProfile = simulationcraftProfile .. playerRace .. '\n'
-    simulationcraftProfile = simulationcraftProfile .. playerRole .. '\n'
     simulationcraftProfile = simulationcraftProfile .. playerProfessions .. '\n'
     simulationcraftProfile = simulationcraftProfile .. playerTalents .. '\n'
     simulationcraftProfile = simulationcraftProfile .. playerGlyphs .. '\n'
-    simulationcraftProfile = simulationcraftProfile .. playerSpec .. '\n\n'
         
     -- get gear info
     local items = Simulationcraft:GetItemStuffs()

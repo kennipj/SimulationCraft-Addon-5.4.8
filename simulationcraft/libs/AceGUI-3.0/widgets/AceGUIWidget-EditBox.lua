@@ -229,7 +229,7 @@ local function Constructor()
 	label:SetJustifyH("LEFT")
 	label:SetHeight(18)
 
-	local button = CreateFrame("Button", nil, editbox, "UIPanelButtonTemplate")
+	local button = CreateFrame("Button", nil, editbox, "UIPanelButtonTemplate2")
 	button:SetWidth(40)
 	button:SetHeight(20)
 	button:SetPoint("RIGHT", -2, 0)

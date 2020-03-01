@@ -14,7 +14,7 @@ Simulationcraft.SimcStatAbbr = {
   ['expertise'] = 'exp',
   ['hit'] = 'hit',
   
-  ['critical_strike'] = 'crit',
+  ['critical_strike_rating'] = 'crit',
   ['crit'] = 'crit',
   ['haste'] = 'haste',
   ['mastery'] = 'mastery',

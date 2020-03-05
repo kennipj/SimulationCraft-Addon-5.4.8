@@ -231,35 +231,11 @@ local function GetSocketBonus(link)
 end
 
 local function GetEnchantBonus(link)
-    SimulationcraftTooltip:ClearLines()
-    SimulationcraftTooltip:SetHyperlink(link)
-    local numLines = SimulationcraftTooltip:NumLines()
-    --Check each line of the tooltip until we find a bonus string
-    local bonusStr=''
-    for i=2, numLines, 1 do
-        tmpText = _G["SimulationcraftTooltipTextLeft"..i]
-        if (tmpText:GetText()) then
-            line = tmpText:GetText()
-            if ( string.sub(line, 0, string.len(L["EnchantBonusPrefix"])) == L["EnchantBonusPrefix"]) then
-                bonusStr=string.sub(line,string.len(L["EnchantBonusPrefix"])+1)
-            end
-        end
+    local enchantBonusStr = Simulationcraft.enchantBonuses[tonumber(enchantId)]
+    if (enchantBonusStr == nil) then
+        enchantBonusStr = ""
     end
-    
-    --simcDebug('Bonus String:')
-    --simcDebug(bonusStr)
-    
-    --simcDebug('Start Conversion:')    
-    
-    -- Extract Enchant bonus from string
-    local enchantBonusStr = ''
-    if bonusStr:len()>0 then
-        enchantBonusStr = ConvertTooltipToStatStr( bonusStr )
-    end
-    --simcDebug('Result of Conversion:')    
-    --simcDebug(enchantBonusStr)
     return enchantBonusStr
-
 end
 
 -- This scans the tooltip to get gem stats

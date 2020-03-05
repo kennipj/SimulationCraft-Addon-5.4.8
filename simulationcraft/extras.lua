@@ -44,6 +44,8 @@ Simulationcraft.simcSlotNames = {'head','neck','shoulder','back','chest','shirt'
 
 Simulationcraft.enchantBonuses = {
   [0]="",
+  [1099]="22agi",
+  [3222]="20agi",
   [4061]="50mastery",
   [4062]="30stam",
   [4063]="15all",

@@ -231,11 +231,14 @@ local function GetSocketBonus(link)
 end
 
 local function GetEnchantBonus(link)
+    local _, enchantId = link:match("item:(%d+):(%d+):(%d+):(%d+):(%d+):(%d+)")
     local enchantBonusStr = Simulationcraft.enchantBonuses[tonumber(enchantId)]
+    
     if (enchantBonusStr == nil) then
         enchantBonusStr = ""
     end
     return enchantBonusStr
+
 end
 
 -- This scans the tooltip to get gem stats

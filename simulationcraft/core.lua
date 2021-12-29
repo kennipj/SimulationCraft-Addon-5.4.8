@@ -356,13 +356,15 @@ function Simulationcraft:GetItemStuffs()
                         end
                         local name,gemLink = GetItemGem(itemLink,i)
                         --simcDebug(gemLink)
-                        local gemBonus = GetGemBonus(gemLink)
-                        --simcDebug(gemBonus)
-                        if GetSocketTypes(i) == "Meta" then gemBonus = name:gsub("%s+", "_"):lower():gsub("_diamond", "") end
-                        if gemString:len()>0 then
-                            gemString=gemString .. '_' .. gemBonus
-                        else
-                            gemString=gemBonus
+                        if (name and gemLink) then
+                            local gemBonus = GetGemBonus(gemLink)
+                            --simcDebug(gemBonus)
+                            if GetSocketTypes(i) == "Meta" then gemBonus = name:gsub("%s+", "_"):lower():gsub("_diamond", "") end
+                            if gemString:len()>0 then
+                                gemString=gemString .. '_' .. gemBonus
+                            else
+                                gemString=gemBonus
+                            end
                         end
                     end
                     -- check for an extra socket (BS, belt buckle)

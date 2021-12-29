@@ -304,6 +304,51 @@ local function GetGemBonus(link)
 end
 
 
+local function ParseItemStatsFromTooltip(link)
+    SimulationcraftTooltip:ClearLines()
+    SimulationcraftTooltip:SetHyperlink(link)
+    local numLines = SimulationcraftTooltip:NumLines()
+
+    local stats_conv = {
+        ["Stamina"] = "sta",
+        ["Agility"] = "agi",
+        ["Intellect"] = "int",
+        ["Strength"] = "str",
+        ["Spirit"] = "spi",
+        ["Hit rating"] = "hit",
+        ["Expertise"] = "exp",
+        ["Critical Strike"] = "crit",
+        ["Spell power"] = "sp",
+        ["Mastery"] = "mastery",
+        ["Haste"] = "haste"
+    }
+
+    local stat_begin = ",stats="
+    local stat_str = ""
+    for i=2, numLines, 1 do
+        local tmpText = _G["SimulationcraftTooltipTextLeft"..i]
+        if (tmpText:GetText()) then
+            local line = tmpText:GetText()
+            if ( string.sub(line, 0, 1) == '+') then
+                -- line = +5,310 Agility
+                local stat_seperator = string.find(line, " ")
+
+                -- num = 5310, stat = agi
+                local stat = stats_conv[string.sub(line, stat_seperator + 1)]
+                if stat then
+                    local num = string.gsub(string.sub(line, 2, stat_seperator - 1), ",", "")
+                    if string.len(stat_str)>0 then
+                        stat_str = stat_str .. "_" .. num .. stat
+                    else
+                        stat_str = num .. stat
+                    end
+                end
+            end
+        end
+    end
+    return stat_begin .. stat_str
+end
+
 function Simulationcraft:GetItemStuffs()
     local items = {}
     for slotNum=1, #slotNames do
@@ -465,7 +510,7 @@ function Simulationcraft:GetItemStuffs()
             end
             
             local reforgeString = CreateSimcReforgeString(itemLink)
-            local statsString = CreateSimcStatsString(itemLink)
+            local statsString = ParseItemStatsFromTooltip(itemLink)
             --gemString ..
         --printable_link = gsub(itemLink, "\124", "\124\124");
         --print(printable_link);

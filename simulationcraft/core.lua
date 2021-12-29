@@ -275,6 +275,7 @@ end
 
 -- This scans the tooltip to get gem stats
 local function GetGemBonus(link)
+    if link == nil then return '' end
     SimulationcraftTooltip:ClearLines()
     SimulationcraftTooltip:SetHyperlink(link)
     local numLines = SimulationcraftTooltip:NumLines()

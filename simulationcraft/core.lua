@@ -318,7 +318,7 @@ local function ParseItemStatsFromTooltip(link)
         ["Hit"] = "hit",
         ["Expertise"] = "exp",
         ["Critical Strike"] = "crit",
-        ["Spell power"] = "sp",
+        ["Spell Power"] = "sp",
         ["Mastery"] = "mastery",
         ["Haste"] = "haste"
     }

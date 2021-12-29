@@ -315,7 +315,7 @@ local function ParseItemStatsFromTooltip(link)
         ["Intellect"] = "int",
         ["Strength"] = "str",
         ["Spirit"] = "spi",
-        ["Hit rating"] = "hit",
+        ["Hit"] = "hit",
         ["Expertise"] = "exp",
         ["Critical Strike"] = "crit",
         ["Spell power"] = "sp",

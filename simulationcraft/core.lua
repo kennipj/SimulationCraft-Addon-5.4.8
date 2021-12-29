@@ -514,7 +514,7 @@ function Simulationcraft:GetItemStuffs()
             --gemString ..
         --printable_link = gsub(itemLink, "\124", "\124\124");
         --print(printable_link);
-        simcItemStr = simcSlotNames[slotNum] .. "=" .. tokenize(name) .. ",id=" .. itemId .. ",upgrade=" .. upgradeLevel .. statsString .. gemString .. enchantString .. reforgeString
+        simcItemStr = simcSlotNames[slotNum] .. "=" .. tokenize(name) .. ",id=" .. itemId --[[.. ",upgrade=" .. upgradeLevel]] .. statsString .. gemString .. enchantString .. reforgeString
           --print('#sockets = '..numSockets .. ', bonus = ' .. tostring(useBonus))
           --print( simcItemStr )
         end

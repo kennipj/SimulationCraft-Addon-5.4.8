@@ -304,6 +304,54 @@ local function GetGemBonus(link)
 end
 
 
+local function ParseItemStatsFromTooltip(link)
+    SimulationcraftTooltip:ClearLines()
+    SimulationcraftTooltip:SetHyperlink(link)
+    local numLines = SimulationcraftTooltip:NumLines()
+
+    local stats_conv = {
+        ["Stamina"] = "sta",
+        ["Agility"] = "agi",
+        ["Intellect"] = "int",
+        ["Strength"] = "str",
+        ["Spirit"] = "spi",
+        ["Hit"] = "hit",
+        ["Expertise"] = "exp",
+        ["Critical Strike"] = "crit",
+        ["Spell Power"] = "sp",
+        ["Mastery"] = "mastery",
+        ["Haste"] = "haste"
+    }
+
+    local stat_begin = ",stats="
+    local stat_str = ""
+    for i=2, numLines, 1 do
+        local tmpText = _G["SimulationcraftTooltipTextLeft"..i]
+        if (tmpText:GetText()) then
+            local line = tmpText:GetText()
+            if ( string.sub(line, 0, 1) == '+') then
+                -- line = +5,310 Agility
+                local stat_seperator = string.find(line, " ")
+                local stat_name = string.sub(line, stat_seperator + 1)
+                local reforge_idx = string.find(stat_name, "%(Reforged")
+                if reforge_idx then stat_name = string.sub(stat_name, 0, reforge_idx - 2) end
+
+                -- num = 5310, stat = agi
+                local stat = stats_conv[stat_name]
+                if stat then
+                    local num = string.gsub(string.sub(line, 2, stat_seperator - 1), ",", "")
+                    if string.len(stat_str)>0 then
+                        stat_str = stat_str .. "_" .. num .. stat
+                    else
+                        stat_str = num .. stat
+                    end
+                end
+            end
+        end
+    end
+    return stat_begin .. stat_str
+end
+
 function Simulationcraft:GetItemStuffs()
     local items = {}
     for slotNum=1, #slotNames do
@@ -465,11 +513,11 @@ function Simulationcraft:GetItemStuffs()
             end
             
             local reforgeString = CreateSimcReforgeString(itemLink)
-            local statsString = CreateSimcStatsString(itemLink)
+            local statsString = ParseItemStatsFromTooltip(itemLink)
             --gemString ..
         --printable_link = gsub(itemLink, "\124", "\124\124");
         --print(printable_link);
-        simcItemStr = simcSlotNames[slotNum] .. "=" .. tokenize(name) .. ",id=" .. itemId .. ",upgrade=" .. upgradeLevel .. statsString .. gemString .. enchantString .. reforgeString
+        simcItemStr = simcSlotNames[slotNum] .. "=" .. tokenize(name) .. ",id=" .. itemId --[[.. ",upgrade=" .. upgradeLevel]] .. statsString .. gemString .. enchantString --[[..reforgeString]]
           --print('#sockets = '..numSockets .. ', bonus = ' .. tostring(useBonus))
           --print( simcItemStr )
         end

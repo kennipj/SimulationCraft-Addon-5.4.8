@@ -352,6 +352,16 @@ local function ParseItemStatsFromTooltip(link)
     return stat_begin .. stat_str
 end
 
+local function SynapseCheck()
+    local synapseName, _ = GetSpellInfo(141330) 
+
+    if string.find(GetItemSpell(GetInventoryItemLink("player", 10)), synapseName) then
+        return true
+    else 
+        return false
+    end
+end
+
 function Simulationcraft:GetItemStuffs()
     local items = {}
     for slotNum=1, #slotNames do
@@ -521,6 +531,11 @@ function Simulationcraft:GetItemStuffs()
           --print('#sockets = '..numSockets .. ', bonus = ' .. tostring(useBonus))
           --print( simcItemStr )
         end
+
+        if slotNum == 9 and SynapseCheck() then 
+            simcItemStr = simcItemStr .. ",addon=synapse_springs_mark_ii"
+        end
+
         items[slotNum] = simcItemStr
     end
     

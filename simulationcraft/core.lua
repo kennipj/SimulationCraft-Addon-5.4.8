@@ -354,11 +354,12 @@ end
 
 local function SynapseCheck()
     local synapseName, _ = GetSpellInfo(141330) 
-
-    if string.find(GetItemSpell(GetInventoryItemLink("player", 10)), synapseName) then
-        return true
-    else 
-        return false
+    if GetItemSpell(GetInventoryItemLink("player", 10)) then
+        if string.find(GetItemSpell(GetInventoryItemLink("player", 10)), synapseName) then
+            return true
+        else 
+            return false
+        end
     end
 end
 

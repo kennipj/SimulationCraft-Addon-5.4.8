@@ -552,10 +552,13 @@ function Simulationcraft:PrintSimcProfile()
     local _, playerRace = UnitRace('player')
     local playerSpec, role
     local specId = GetSpecialization()
-    -- change bloodelf string to be compatible with simc parsing
+    -- change elf race strings to be compatible with simc parsing
     if (string.lower(playerRace) == 'bloodelf') then
         playerRace = 'blood_elf'
-    end    
+    end
+    if (string.lower(playerRace) == 'nightelf') then
+        playerRace = 'night_elf'
+    end
     if specId then
       _, playerSpec,_,_,_,role = GetSpecializationInfo(specId)
     end
